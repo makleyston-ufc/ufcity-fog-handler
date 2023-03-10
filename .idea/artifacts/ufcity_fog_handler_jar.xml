@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ufcity-fog-handler:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ufcity_fog_handler_jar</output-path>
+    <root id="archive" name="ufcity-fog-handler.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>
