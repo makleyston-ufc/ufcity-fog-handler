@@ -1,4 +1,4 @@
 package com.ufcity.handler.procedures;
 
-public class ClusteringDefault {
+public class MissingData {
 }

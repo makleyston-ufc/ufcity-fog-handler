@@ -1,4 +1,4 @@
-package com.ufcity.handler.communcation.seding.mqtt;
+package com.ufcity.handler.communcation.sending.mqtt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +49,10 @@ public class ConnectionConfig {
 
     public void addTopic(String topic){
         this.topics.add(topic);
+    }
+
+    public void clearTopics(){
+        this.topics.clear();
     }
 
 

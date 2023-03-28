@@ -1,4 +1,4 @@
-package com.ufcity.handler.communcation.seding.mqtt;
+package com.ufcity.handler.communcation.sending.mqtt;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;

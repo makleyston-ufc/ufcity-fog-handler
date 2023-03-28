@@ -1,10 +1,7 @@
-package com.ufcity.handler.communcation.seding.mqtt;
+package com.ufcity.handler.communcation.sending.mqtt;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class ConnectionDefault {
 

@@ -1,4 +1,4 @@
-package com.ufcity.handler.communcation.seding.mqtt;
+package com.ufcity.handler.communcation.sending.mqtt;
 
 public interface MessageObserver {
 
