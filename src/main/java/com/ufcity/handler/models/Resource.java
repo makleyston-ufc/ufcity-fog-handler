@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Resource {
 
     private Location location;
-    private String resource_uuid;
+    private String uuid_resource;
     ArrayList < Service > services = new ArrayList< Service >();
 
     public ArrayList< Service > getServices(){
@@ -18,16 +18,16 @@ public class Resource {
         return location;
     }
 
-    public String getResource_uuid() {
-        return resource_uuid;
+    public String getUuid_resource() {
+        return uuid_resource;
     }
 
     public void setLocation(Location locationObject) {
         this.location = locationObject;
     }
 
-    public void setResource_uuid(String resource_uuid) {
-        this.resource_uuid = resource_uuid;
+    public void setUuid_resource(String uuid_resource) {
+        this.uuid_resource = uuid_resource;
     }
 
     public String toJson(){

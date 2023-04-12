@@ -12,19 +12,18 @@ import static java.time.LocalDateTime.now;
 
 public class Subscribe extends ConnectionDefault {
     static Logger log = Logger.getLogger(Main.class.getName());
-    ConnectionConfig conn;
+//    ConnectionConfig conn;
+    String clientId = PREFIX+SUB+now();
 
     public Subscribe(ConnectionConfig connectionConfig) {
         super(connectionConfig);
-        this.conn = connectionConfig;
+//        this.conn = connectionConfig;
     }
 
     public void subscribe(MessageObserver messageObserver) throws MqttException {
-
-        String clientId = PREFIX+SUB+now();
         try {
-            log.info(conn.getServerURI());
-            client = new MqttClient(conn.getServerURI(), clientId);
+            System.out.println("SUB# ServerURI: " + connectionConfig.getServerURI());
+            client = new MqttClient(connectionConfig.getServerURI(), clientId);
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
             client.connect(connOpts);
@@ -37,6 +36,10 @@ public class Subscribe extends ConnectionDefault {
         } catch (MqttException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setClientId(String clientId){
+        this.clientId = PREFIX+SUB+clientId+now();
     }
 
 }

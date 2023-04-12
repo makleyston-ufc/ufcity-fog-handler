@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Device {
-    private String device_uuid;
+    private String uuid_device;
     Location location;
     private List<Resource> resources = new ArrayList<>();
 
-    public String getDevice_uuid() {
-        return device_uuid;
+    public String getUuid_device() {
+        return uuid_device;
     }
 
     public Location getLocation() {
         return location;
     }
 
-    public void setDevice_uuid(String device_uuid) {
-        this.device_uuid = device_uuid;
+    public void setUuid_device(String uuid_device) {
+        this.uuid_device = uuid_device;
     }
 
     public void setLocation(Location locationObject) {
@@ -25,16 +25,20 @@ public class Device {
     }
 
     public void addResource(Resource resource){
-        this.resources.add(resource);
+        if(getResourceByUUID(resource.getUuid_resource()) == null)
+            this.resources.add(resource);
     }
 
     public void removeResource(Resource resource){
-        for (Resource r :
-                this.resources) {
-            if (r.getResource_uuid().equals(resource.getResource_uuid())){
-                this.resources.remove(r);
-            }
-        }
+        this.resources.removeIf(r -> r.getUuid_resource().equals(resource.getUuid_resource()));
+    }
+
+    public void removeResourceByUUID(String uuid_resource){
+        this.resources.removeIf(r -> r.getUuid_resource().equals(uuid_resource));
+    }
+
+    public Resource getResourceByUUID(String uuid){
+        return this.resources.stream().filter(r -> r.getUuid_resource().equals(uuid)).findFirst().orElse(null);
     }
 
     public List<Resource> getResources() {

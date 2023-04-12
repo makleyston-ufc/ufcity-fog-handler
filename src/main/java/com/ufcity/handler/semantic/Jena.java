@@ -35,6 +35,11 @@ public class Jena implements Semantic{
     }
 
     @Override
+    public void removeResourceByUUID(String uuidDevice, String uuid_resource) {
+//TODO
+    }
+
+    @Override
     public void updateDevice(Device device) {
 
     }

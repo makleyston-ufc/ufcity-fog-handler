@@ -10,8 +10,8 @@ public class ConnectionConfig {
     private List<String> topics = new ArrayList<>();
 
     public ConnectionConfig(){
-        this.port = ConnectionData.PORT_EDGE; //port default
-        this.host = ConnectionData.HOST_EDGE; //host default
+        this.port = ConnectionData.EDGE_PORT; //port default
+        this.host = ConnectionData.EDGE_HOST; //host default
     }
 
     public ConnectionConfig(String host, String port){
@@ -45,6 +45,11 @@ public class ConnectionConfig {
 
     public void setTopics(List<String> topics) {
         this.topics = topics;
+    }
+
+    public void setTopic(String topic) {
+        this.topics.clear();
+        this.topics.add(topic);
     }
 
     public void addTopic(String topic){

@@ -12,12 +12,12 @@ import org.bson.Document;
 public class MongoDB implements Database{
 
     final String HOST = "localhost";
-    MongoClient mongoClient = MongoClients.create("mongodb://"+HOST+":27017");
-    MongoDatabase database = mongoClient.getDatabase("ufcity");
+//    MongoClient mongoClient = MongoClients.create("mongodb://"+HOST+":27017");
+//    MongoDatabase database = mongoClient.getDatabase("ufcity");
 
     @Override
     public void saveDevice(Device device) {
-        MongoCollection<Document> doc = database.getCollection("device");
+//        MongoCollection<Document> doc = database.getCollection("device");
         //TODO
     }
 
@@ -33,6 +33,11 @@ public class MongoDB implements Database{
 
     @Override
     public void removeResource(String uuidDevice, Resource resource) {
+//TODO
+    }
+
+    @Override
+    public void removeResourceByUUID(String uuidDevice, String uuid_resource) {
 //TODO
     }
 
