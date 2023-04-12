@@ -23,3 +23,6 @@ Example of a `ufcity-handler.config` file
 --fog-port 1883
 --cloud-port 1883
 ```
+
+### Running the `ufcity-handler.jar`
+`java -jar ufcity-handler.jar`
