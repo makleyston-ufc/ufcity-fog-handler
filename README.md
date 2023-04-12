@@ -14,7 +14,7 @@ Create a configuration file `ufcity-handler.config` inside the `config` director
   - config/
     - ufcity-handler.config
 
-Example of a `ufcity-handler.config` file
+Example of a `ufcity-handler.config` file:
 ```
 --edge-address 172.20.0.2
 --fog-address 172.23.0.4
@@ -24,5 +24,8 @@ Example of a `ufcity-handler.config` file
 --cloud-port 1883
 ```
 
-### Running the `ufcity-handler.jar`
-`java -jar ufcity-handler.jar`
+#### Download  UFCity Handler
+Download: [ufcity-fog-handler-1.0-SNAPSHOT.jar](build%2Flibs%2Fufcity-fog-handler-1.0-SNAPSHOT.jar)
+
+#### Running the UFCity Handler
+`java -jar ufcity-fog-handler-1.0-SNAPSHOT.jar`
