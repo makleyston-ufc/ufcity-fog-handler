@@ -3,17 +3,22 @@ package com.ufcity.handler.semantic;
 import com.ufcity.handler.models.Device;
 import com.ufcity.handler.models.Resource;
 
-public interface Semantic {
+public abstract class Semantic {
+    private String host;
+    private String port;
 
-    public void createSemantic(Device device);
-    public void createSemantic(Resource resource);
-    public void saveDevice(Device device);
-    public void saveResource(String uuidDevice, Resource resource);
-    public void removeDevice(Device device);
-    public void removeResource(String uuidDevice, Resource resource);
-    public void removeResourceByUUID(String uuidDevice, String uuid_resource);
-    public void updateDevice(Device device);
-    public void updateResource(String uuidDevice, Resource resource);
-
+    public Semantic(String host, String port) {
+        this.host = host;
+        this.port = port;
+    }
+    public abstract void createSemantic(Device device);
+    public abstract void createSemantic(Resource resource);
+    public abstract void saveDevice(Device device);
+    public abstract void saveResource(String uuidDevice, Resource resource);
+    public abstract void removeDevice(Device device);
+    public abstract void removeResource(String uuidDevice, Resource resource);
+    public abstract void removeResourceByUUID(String uuidDevice, String uuid_resource);
+    public abstract void updateDevice(Device device);
+    public abstract void updateResource(String uuidDevice, Resource resource);
 
 }

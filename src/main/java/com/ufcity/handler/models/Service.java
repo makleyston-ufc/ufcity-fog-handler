@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Service {
-    private String service_uuid;
-    ArrayList<Map<String, String>> data = new ArrayList<Map<String, String>>();
+    public String uuid_service;
+    public ArrayList<Data> data = new ArrayList<Data>();
 
-    public String getService_uuid() {
-        return service_uuid;
+    public String getUuid_service() {
+        return uuid_service;
     }
 
-    public ArrayList<Map<String, String>> getData() {
+    public ArrayList<Data> getData() {
         return data;
     }
 
-    public void setService_uuid(String service_uuid) {
-        this.service_uuid = service_uuid;
+    public void setUuid_service(String uuid_service) {
+        this.uuid_service = uuid_service;
     }
 
 

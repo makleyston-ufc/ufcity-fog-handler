@@ -3,7 +3,12 @@ package com.ufcity.handler.semantic;
 import com.ufcity.handler.models.Device;
 import com.ufcity.handler.models.Resource;
 
-public class Jena implements Semantic{
+public class Jena extends Semantic{
+
+    public Jena(String host, String port) {
+        super(host, port);
+    }
+
     @Override
     public void createSemantic(Device device) {
         //TODO

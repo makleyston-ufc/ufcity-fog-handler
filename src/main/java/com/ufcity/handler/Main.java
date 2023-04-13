@@ -30,6 +30,9 @@ public class Main {
 
     static Gson gson = new Gson();
 
+    static Database database;
+    static Semantic semantic;
+
     public static void main(String[] args) throws MqttException, IOException {
 
         if (args.length == 0)
@@ -154,11 +157,9 @@ public class Main {
         d.removeResourceByUUID(uuid_resource);
 
         /* Storage in MongoDB */
-        Database database = new MongoDB();
         database.removeResourceByUUID(uuid_device, uuid_resource);
 
         /* Semantic annotation and save entity in FusekiJena */
-        Semantic semantic = new Jena();
         semantic.removeResourceByUUID(uuid_device, uuid_resource);
     }
 
@@ -179,11 +180,9 @@ public class Main {
         d.addResource(resource);
 
         /* Storage in MongoDB */
-        Database database = new MongoDB();
         database.saveResource(uuid_device, resource);
 
         /* Semantic annotation and save entity in FusekiJena */
-        Semantic semantic = new Jena();
         semantic.createSemantic(resource);
         semantic.saveResource(uuid_device, resource);
     }
@@ -199,11 +198,9 @@ public class Main {
         SaveInMemory.getInstance().addDevice(device);
 
         /* Storage in MongoDB */
-        Database database = new MongoDB();
         database.saveDevice(device);
 
         /* Semantic annotation and save entity in FusekiJena */
-        Semantic semantic = new Jena();
         semantic.createSemantic(device);
         semantic.saveDevice(device);
     }
@@ -276,9 +273,9 @@ public class Main {
         while (true) {
             line = buffRead.readLine();
             if (line != null) {
-                String[] l = line.split(" ");
-                args.add(l[0]);
-                args.add(l[1]);
+                String[] l = line.split(":");
+                args.add(l[0].trim());
+                args.add(l[1].trim());
 //                System.out.println(l[0] + " ## " + l[1]);
             } else {
                 buffRead.close();
@@ -289,6 +286,7 @@ public class Main {
     }
 
     public static int Menu(String[] params){
+        String da = null, dp="27017", sa=null, sp="3030";
         int qtArgs = params.length;
         if(qtArgs == 0) {
             System.out.println("Invalid parameters. Type -h (or --help) for help.");
@@ -296,13 +294,17 @@ public class Main {
         }
         if(qtArgs == 1){
             if(params[0].equals("-h") || params[0].equals("--help")){
-                System.out.println("-ea \t--edge-address    \tAddress to edge computing.");
-                System.out.println("-fa \t--fog-address     \tAddress to fog computing.");
-                System.out.println("-ca \t--cloud-address   \tAddress to cloud computing.");
-                System.out.println("-ep \t--edge-port       \tPort to edge computing.");
-                System.out.println("-fp \t--fog-port        \tPort to edge computing.");
-                System.out.println("-cp \t--cloud-port      \tPort to cloud computing.");
-                System.out.println("-v  \t--version         \tVersion of this system.");
+                System.out.println("-ea \t--edge-address        \tAddress to edge computing.");
+                System.out.println("-fa \t--fog-address         \tAddress to fog computing.");
+                System.out.println("-ca \t--cloud-address       \tAddress to cloud computing.");
+                System.out.println("-ep \t--edge-port           \tPort to edge computing.");
+                System.out.println("-fp \t--fog-port            \tPort to edge computing.");
+                System.out.println("-cp \t--cloud-port          \tPort to cloud computing.");
+                System.out.println("-da \t--database-address    \tAddress to database.");
+                System.out.println("-dp \t--database-port       \tPort to database");
+                System.out.println("-sa \t--semantic-address    \tAddress to semantic server.");
+                System.out.println("-sp \t--semantic-port       \tPort to semantic server.");
+                System.out.println("-v  \t--version             \tVersion of this system.");
             } else if (params[0].equals("-v") || params[0].equals("--version")) {
                 System.out.println("Version: 0.1.0 March 2023.");
             } else {
@@ -323,10 +325,21 @@ public class Main {
                     case "-ep", "--edge-port" -> setEdgePort(params[i + 1]);
                     case "-fp", "--fog-port" -> setInnerPort(params[i + 1]);
                     case "-cp", "--cloud-port" -> setPortCloud(params[i + 1]);
+                    case "-da", "--database-address" -> da = params[i + 1];
+                    case "-dp", "--database-port" -> dp = params[i + 1];
+                    case "-sa", "--semantic-address" -> sa = params[i + 1];
+                    case "-sp", "--semantic-port" -> sp = params[i + 1];
                 }
                 i = i + 2;
             }
-//            setHostInner("172.23.0.4");
+            if(da != null) {
+                System.out.println(">> Connecting database! Database address: "+da+":"+dp);
+                database = new MongoDB(da, dp);
+            }
+            if(sa != null) {
+                System.out.println(">> Connecting semantic server! Semantic server address: "+sa+":"+sp);
+                semantic = new Jena(sa, sp);
+            }
             return 0;
         }
     }
