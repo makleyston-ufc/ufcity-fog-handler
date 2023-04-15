@@ -52,12 +52,19 @@ public class MongoDB extends Database{
         Bson projection = excludeId();
         Document device = collectionDevices.find(filter).projection(projection).first();
         List<Document> resources = null;
+
         if(device != null){
             resources = (List<Document>) device.get("resources");
+            for (Document docResource :
+                    resources) {
+                if (docResource.getString("uuid_resource").equals(resource.getUuid_resource()))
+                    return;
+
+            }
+
             Document newResource = createDocument(resource);
             resources.add(newResource);
-            device.remove("resources");
-            device.append("resources", resources);
+            device.replace("resources", resources);
             ReplaceOptions options = new ReplaceOptions().upsert(true);
             collectionDevices.replaceOne(filter, device, options);
         }

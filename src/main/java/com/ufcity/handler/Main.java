@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.ufcity.handler.communcation.sending.mqtt.*;
 import com.ufcity.handler.models.Device;
 import com.ufcity.handler.models.Resource;
-import com.ufcity.handler.semantic.Jena;
+import com.ufcity.handler.semantic.SemanticImpl;
 import com.ufcity.handler.semantic.Semantic;
 import com.ufcity.handler.storage.Database;
 import com.ufcity.handler.storage.MongoDB;
@@ -338,7 +338,7 @@ public class Main {
             }
             if(sa != null) {
                 System.out.println(">> Connecting semantic server! Semantic server address: "+sa+":"+sp);
-                semantic = new Jena(sa, sp);
+                semantic = new SemanticImpl(sa, sp);
             }
             return 0;
         }
