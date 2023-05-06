@@ -286,7 +286,7 @@ public class Main {
     }
 
     public static int Menu(String[] params){
-        String da = null, dp="27017", sa=null, sp="3030";
+        String da = null, dp="27017", sa=null, sp="3030", semantic_password="admin", semantic_login="admin";
         int qtArgs = params.length;
         if(qtArgs == 0) {
             System.out.println("Invalid parameters. Type -h (or --help) for help.");
@@ -304,6 +304,8 @@ public class Main {
                 System.out.println("-dp \t--database-port       \tPort to database");
                 System.out.println("-sa \t--semantic-address    \tAddress to semantic server.");
                 System.out.println("-sp \t--semantic-port       \tPort to semantic server.");
+                System.out.println("-sl \t--semantic-login      \tLogin to semantic server.");
+                System.out.println("-ss \t--semantic-password   \tPassword to semantic server.");
                 System.out.println("-v  \t--version             \tVersion of this system.");
             } else if (params[0].equals("-v") || params[0].equals("--version")) {
                 System.out.println("Version: 0.1.0 March 2023.");
@@ -329,6 +331,8 @@ public class Main {
                     case "-dp", "--database-port" -> dp = params[i + 1];
                     case "-sa", "--semantic-address" -> sa = params[i + 1];
                     case "-sp", "--semantic-port" -> sp = params[i + 1];
+                    case "-sl", "--semantic-login" -> semantic_login = params[i + 1];
+                    case "-ss", "--semantic-password" -> semantic_password = params[i + 1];
                 }
                 i = i + 2;
             }
@@ -338,7 +342,7 @@ public class Main {
             }
             if(sa != null) {
                 System.out.println(">> Connecting semantic server! Semantic server address: "+sa+":"+sp);
-                semantic = new SemanticImpl(sa, sp);
+                semantic = new SemanticImpl(sa, sp, semantic_login, semantic_password);
             }
             return 0;
         }

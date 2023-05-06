@@ -32,7 +32,7 @@ public class SemanticImpl extends Semantic{
             "PREFIX wgs84_pos:  <http://www.w3.org/2003/01/geo/wgs84_pos#> \n" +
             "PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#> ";
 
-    public SemanticImpl(String host, String port) {
+    public SemanticImpl(String host, String port, String login, String password) {
         super(host, port);
 
         try {
@@ -40,8 +40,8 @@ public class SemanticImpl extends Semantic{
             URI endpointWrite = new URI("http://"+this.getHost()+":"+this.getPort()+"/ufcity-ont/update");
 
             HTTPBasicAuthSettings auth = new HTTPBasicAuthSettings();
-            auth.setLogin("admin");
-            auth.setPassword("74S2Ogv1kHl7ZS1");
+            auth.setLogin(login);
+            auth.setPassword(password);
 
             sparqlClient = new SparqlClient(false);
             sparqlClient.setAuthorizationSettings(auth);
