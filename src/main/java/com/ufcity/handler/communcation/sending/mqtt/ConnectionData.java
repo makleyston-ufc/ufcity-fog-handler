@@ -7,10 +7,10 @@ public class ConnectionData {
     final public static String PREFIX = "handler_";
     final public static String PUB = "pub_";
     final public static String SUB = "sub_";
-    public static String EDGE_PORT = "1883";
+//    public static String EDGE_PORT = "1883";
     public static String INNER_PORT = "1883";
     public static String PORT_CLOUD = "1883";
-    public static String EDGE_HOST;
+//    public static String EDGE_HOST;
     public static String INNER_HOST;
     public static String HOST_CLOUD;
     final public static String EDGE_RESOURCES_DATA_SUBSCRIBE = "resource_data";
@@ -20,7 +20,7 @@ public class ConnectionData {
     final public static String EDGE_RESOURCE_COMMANDS_PUBLISH = "commands_fog_to_edge";
     final public static String EDGE_RESEND_RESOURCE_DATA_PUBLISH = "resend";
     final public static String INNER_CEP_RESOURCE_DATA_PUBLISH = "cep";
-    final public static String INNER_RESOURCE_DATA_PUBLISH = "resource_data";
+    final public static String INNER_RESOURCE_DATA = "resource_data";
     final public static String INNER_COMBINED_SERVICES_PUBLISH = "combined_services";
 
     public static List<String> getEdgeSubscribeTopics(){
@@ -34,7 +34,7 @@ public class ConnectionData {
 
     public static List<String> getInnerSubscribeTopics(){
         List<String> topics = new ArrayList<String>();
-        topics.add(INNER_RESOURCE_DATA_PUBLISH+"/+");
+        topics.add(INNER_RESOURCE_DATA +"/+");
         return topics;
     }
 
@@ -54,13 +54,13 @@ public class ConnectionData {
         INNER_HOST = innerHost;
     }
 
-    public static String getEdgePort() {
-        return EDGE_PORT;
-    }
-
-    public static void setEdgePort(String edgePort) {
-        EDGE_PORT = edgePort;
-    }
+//    public static String getEdgePort() {
+//        return EDGE_PORT;
+//    }
+//
+//    public static void setEdgePort(String edgePort) {
+//        EDGE_PORT = edgePort;
+//    }
 
     public static String getPortCloud() {
         return PORT_CLOUD;
@@ -70,13 +70,13 @@ public class ConnectionData {
         PORT_CLOUD = portCloud;
     }
 
-    public static String getEdgeHost() {
-        return EDGE_HOST;
-    }
+//    public static String getEdgeHost() {
+//        return EDGE_HOST;
+//    }
 
-    public static void setEdgeHost(String edgeHost) {
-        EDGE_HOST = edgeHost;
-    }
+//    public static void setEdgeHost(String edgeHost) {
+//        EDGE_HOST = edgeHost;
+//    }
 
     public static String getHostCloud() {
         return HOST_CLOUD;

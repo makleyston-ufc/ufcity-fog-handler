@@ -25,11 +25,8 @@ import static com.ufcity.handler.communcation.sending.mqtt.ConnectionData.*;
 public class Main {
 
     static Logger log = Logger.getLogger(Main.class.getName());
-
     static String uuidItself = UUID.randomUUID().toString();
-
     static Gson gson = new Gson();
-
     static Database database;
     static Semantic semantic;
 
@@ -43,6 +40,8 @@ public class Main {
         log.info("The Handler Service is starting its settings.\n" +
                 "Please wait a few moments.");
 
+        uuidItself = database.setOrGetFogUUIDFog(uuidItself);
+
         /* Initializing the MQTT Broker for inner communication */
 
         if(!SaveInMemory.getInstance().findDeviceByUUID(uuidItself)) {
@@ -51,24 +50,25 @@ public class Main {
             SaveInMemory.getInstance().addDevice(device);
         }
 
-        System.out.println("### Inner Computing ###");
-        ConnectionConfig connectionConfigSubInner = new ConnectionConfig(INNER_HOST, INNER_PORT);
-        connectionConfigSubInner.setTopics(getInnerSubscribeTopics());
-        Subscribe subscribeInner = new Subscribe(connectionConfigSubInner);
-        subscribeInner.subscribe((topic, message) -> {
-            System.out.println("## Message received from fog computing itself. ");
-            System.out.println("## Topic: "+topic+", Message: "+message);
-            Resource resource = gson.fromJson(message, Resource.class);
-            //TODO Falta registrar o resource
-            SaveInMemory.getInstance().getDeviceByUUID(uuidItself).addResource(resource);
-//            System.out.println(">> Combined service registered locally!");
-
-            storageAndPublishCloud(uuidItself, resource);
-        });
+        /* Novos Resources que surgiram após combinações de outros Resources */
+//        System.out.println("### Inner Computing ###");
+//        ConnectionConfig connectionConfigSubInner = new ConnectionConfig(INNER_HOST, INNER_PORT);
+//        connectionConfigSubInner.setTopics(getInnerSubscribeTopics());
+//        Subscribe subscribeInner = new Subscribe(connectionConfigSubInner);
+//        subscribeInner.subscribe((topic, message) -> {
+//            System.out.println("## Message received from fog computing itself. ");
+//            System.out.println("## Topic: "+topic+", Message: "+message);
+//            Resource resource = gson.fromJson(message, Resource.class);
+//            //TODO Falta registrar o resource
+//            SaveInMemory.getInstance().getDeviceByUUID(uuidItself).addResource(resource);
+////            System.out.println(">> Combined service registered locally!");
+//
+//            storageAndPublishCloud(uuidItself, resource);
+//        });
 
         /*  Initializing the MQTT Broker for edge communication. */
-        System.out.println("### Edge Computing ###");
-        ConnectionConfig connectionConfigSubEdge = new ConnectionConfig(EDGE_HOST, EDGE_PORT);
+        System.out.println("### MQTT Broker ###");
+        ConnectionConfig connectionConfigSubEdge = new ConnectionConfig(INNER_HOST, INNER_PORT);
         connectionConfigSubEdge.setTopics(getEdgeSubscribeTopics());
         Subscribe subscribeEdge = new Subscribe(connectionConfigSubEdge);
         subscribeEdge.subscribe((topic, message) -> {
@@ -105,7 +105,7 @@ public class Main {
 
         if(d == null){
             System.err.println("Device don't registered!");
-            ConnectionConfig connectionConfigPubEdge = new ConnectionConfig(EDGE_HOST, EDGE_PORT);
+            ConnectionConfig connectionConfigPubEdge = new ConnectionConfig(INNER_HOST, INNER_PORT);
             connectionConfigPubEdge.setTopic(getResendDeviceTopic(uuid_device));
             new Publish(connectionConfigPubEdge).publish(uuid_device);
             return;
@@ -134,13 +134,16 @@ public class Main {
         //TODO
 
         /* Sending resource to Combined Service component and CEP. */
-        System.out.println(">> Sending resource to Combined Service component and CEP.");
-        ConnectionConfig connectionConfigInner = new ConnectionConfig(INNER_HOST, INNER_PORT);
-        connectionConfigInner.clearTopics();
-        connectionConfigInner.addTopic(getInnerCombinedServicesTopic(uuid_device, resource.getUuid_resource()));
-        connectionConfigInner.addTopic(getInnerCEPResourcesDataPublishTopic(uuid_device, resource.getUuid_resource()));
-        Publish publish = new Publish(connectionConfigInner);
-        publish.publish(resource.toJson());
+        /* Percebi que não é preciso publicar no CEP e no Combinarion, pois eles podem consumir diretamenteo do MQTT.
+        * No entanto, o handler deve receber por um tópico específico os dados resultantes do Combinarion, visto que não
+        * foram postados pelos devices da edge computing. */
+//        System.out.println(">> Sending resource to Combined Service component and CEP.");
+//        ConnectionConfig connectionConfigInner = new ConnectionConfig(INNER_HOST, INNER_PORT);
+//        connectionConfigInner.clearTopics();
+//        connectionConfigInner.addTopic(getInnerCombinedServicesTopic(uuid_device, resource.getUuid_resource()));
+//        connectionConfigInner.addTopic(getInnerCEPResourcesDataPublishTopic(uuid_device, resource.getUuid_resource()));
+//        Publish publish = new Publish(connectionConfigInner);
+//        publish.publish(resource.toJson());
 
         storageAndPublishCloud(uuid_device, resource);
     }
@@ -171,7 +174,7 @@ public class Main {
         Device d = SaveInMemory.getInstance().getDeviceByUUID(uuid_device);
         if(d == null){
             System.err.println("Device don't registered!");
-            ConnectionConfig connectionConfigPubEdge = new ConnectionConfig(EDGE_HOST, EDGE_PORT);
+            ConnectionConfig connectionConfigPubEdge = new ConnectionConfig(INNER_HOST, INNER_PORT);
             connectionConfigPubEdge.setTopic(getResendDeviceTopic(uuid_device));
             new Publish(connectionConfigPubEdge).publish(uuid_device);
             return;
@@ -265,7 +268,7 @@ public class Main {
     }
 
     public static String[] ReaderConfig() throws IOException {
-        String path = new File("config/ufcity-handler.config").getAbsolutePath();
+        String path = new File("ufcity-handler.config").getAbsolutePath();
 //        System.out.println(path);
         BufferedReader buffRead = new BufferedReader(new FileReader(path));
         List<String> args = new ArrayList<>();
@@ -294,10 +297,10 @@ public class Main {
         }
         if(qtArgs == 1){
             if(params[0].equals("-h") || params[0].equals("--help")){
-                System.out.println("-ea \t--edge-address        \tAddress to edge computing.");
+//                System.out.println("-ea \t--edge-address        \tAddress to edge computing.");
                 System.out.println("-fa \t--fog-address         \tAddress to fog computing.");
                 System.out.println("-ca \t--cloud-address       \tAddress to cloud computing.");
-                System.out.println("-ep \t--edge-port           \tPort to edge computing.");
+//                System.out.println("-ep \t--edge-port           \tPort to edge computing.");
                 System.out.println("-fp \t--fog-port            \tPort to edge computing.");
                 System.out.println("-cp \t--cloud-port          \tPort to cloud computing.");
                 System.out.println("-da \t--database-address    \tAddress to database.");
@@ -321,10 +324,10 @@ public class Main {
             int i = 0;
             while (i < qtArgs){
                 switch (params[i]) {
-                    case "-ea", "--edge-address" -> setEdgeHost(params[i + 1]);
+//                    case "-ea", "--edge-address" -> setEdgeHost(params[i + 1]);
                     case "-fa", "--fog-address" -> setInnerHost(params[i + 1]);
                     case "-ca", "--cloud-address" -> setHostCloud(params[i + 1]);
-                    case "-ep", "--edge-port" -> setEdgePort(params[i + 1]);
+//                    case "-ep", "--edge-port" -> setEdgePort(params[i + 1]);
                     case "-fp", "--fog-port" -> setInnerPort(params[i + 1]);
                     case "-cp", "--cloud-port" -> setPortCloud(params[i + 1]);
                     case "-da", "--database-address" -> da = params[i + 1];

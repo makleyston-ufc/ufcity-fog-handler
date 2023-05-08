@@ -21,6 +21,7 @@ public abstract class Database {
     public abstract void removeResourceByUUID(String uuidDevice, String uuid_resource);
     public abstract void updateDevice(Device device);
     public abstract void updateResource(String uuidDevice, Resource resource);
+    public abstract String setOrGetFogUUIDFog(String uuid_fog);
 
 
 }

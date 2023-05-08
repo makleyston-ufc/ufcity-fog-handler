@@ -127,6 +127,20 @@ public class MongoDB extends Database{
         }
     }
 
+    @Override
+    public String setOrGetFogUUIDFog(String uuid_fog) {
+        System.out.println(">> Verifying if this node is registered on Storage DB.");
+        Document docFog = database.getCollection("fog_computing").find().first();
+        if(docFog != null){
+            return docFog.getString("uuid_fog");
+        }else {
+            Document document = new Document();
+            document.append("uuid_fog", uuid_fog);
+            database.getCollection("fog_computing").insertOne(document);
+            return uuid_fog;
+        }
+    }
+
     private Document createDocument(Device device){
         Document document = new Document();
         document.append("uuid_device", device.getUuid_device());
