@@ -1,0 +1,3 @@
+[submodule "src/main/java/ufcitycore"]
+	path = src/main/java/ufcitycore
+	url = https://github.com/makleyston-ufc/ufcitycore.git

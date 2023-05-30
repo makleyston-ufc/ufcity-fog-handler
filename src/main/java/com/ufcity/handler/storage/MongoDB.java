@@ -3,9 +3,10 @@ package com.ufcity.handler.storage;
 import com.google.gson.Gson;
 import com.mongodb.client.*;
 import com.mongodb.client.model.*;
-import com.ufcity.handler.models.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import ufcitycore.models.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import static com.mongodb.client.model.Projections.excludeId;
@@ -107,7 +108,7 @@ public class MongoDB extends Database{
 
     @Override
     public void updateResource(String uuidDevice, Resource resource) {
-        System.out.print(">> Removing resource " + resource.getUuid_resource() + " into device " + uuidDevice + " in MongoDB... ");
+//        System.out.print(">> Removing resource " + resource.getUuid_resource() + " into device " + uuidDevice + " in MongoDB... ");
         Bson filter = Filters.eq("uuid_device", uuidDevice);
         Document device = collectionDevices.find(filter).projection(excludeId()).first();
         List<Document> resources;

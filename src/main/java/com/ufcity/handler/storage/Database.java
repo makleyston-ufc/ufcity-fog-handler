@@ -1,7 +1,7 @@
 package com.ufcity.handler.storage;
 
-import com.ufcity.handler.models.Device;
-import com.ufcity.handler.models.Resource;
+import ufcitycore.models.Device;
+import ufcitycore.models.Resource;
 
 public abstract class Database {
 
