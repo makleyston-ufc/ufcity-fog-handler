@@ -50,7 +50,7 @@ public class DataGroupingHandling {
         this.time = time;
     }
 
-    List<List<Data>> allQueue;
+    List<List<Data>> allQueue = new ArrayList<>();
 
     public void addData(Resource resource){
         boolean flag = false;
@@ -61,11 +61,17 @@ public class DataGroupingHandling {
                 flag = true;
             }
         }
-        if(!flag) {
+        if (!flag) {
             List<Data> oneNewQueue = new ArrayList<>();
             Data data = new Data(resource, LocalDateTime.now());
             oneNewQueue.add(data);
             allQueue.add(oneNewQueue);
+        }
+        System.out.println("Queues: ");
+        for (int i = 0; i < allQueue.size(); i++){
+            System.out.println("Size of queue " + i + " # "
+                    + allQueue.get(i).get(0).getResource().getUuid_resource()
+                    + ": " + allQueue.get(i).size());
         }
     }
 
@@ -85,57 +91,83 @@ public class DataGroupingHandling {
 
     private List<List<Data>> atLeastTimeAndSizeGrouping() {
         List<List<Data>> queueToPublish = new ArrayList<>();
+        List<List<Data>> queuesToRemove = new ArrayList<>();
+
         for (List<Data> oneQueue : allQueue) {
             LocalDateTime firstTime = oneQueue.get(0).getLocalDateTime();
             LocalDateTime lastTime = oneQueue.get(oneQueue.size() - 1).getLocalDateTime();
             Duration duration = Duration.between(firstTime, lastTime);
             long seconds = duration.getSeconds();
-            if((seconds >= this.time) && (oneQueue.size() >= this.size)){
+
+            if (seconds >= this.time && oneQueue.size() >= this.size) {
                 queueToPublish.add(oneQueue);
-                allQueue.remove(oneQueue);
+                queuesToRemove.add(oneQueue);
             }
         }
+
+        allQueue.removeAll(queuesToRemove);
+
         return queueToPublish;
     }
+
 
     private List<List<Data>> atLeastTimeGrouping() {
         List<List<Data>> queueToPublish = new ArrayList<>();
+        List<List<Data>> queuesToRemove = new ArrayList<>();
+
         for (List<Data> oneQueue : allQueue) {
             LocalDateTime firstTime = oneQueue.get(0).getLocalDateTime();
             LocalDateTime lastTime = oneQueue.get(oneQueue.size() - 1).getLocalDateTime();
             Duration duration = Duration.between(firstTime, lastTime);
             long seconds = duration.getSeconds();
-            if(seconds >= this.time){
+
+            if (seconds >= this.time) {
                 queueToPublish.add(oneQueue);
-                allQueue.remove(oneQueue);
+                queuesToRemove.add(oneQueue);
             }
         }
+
+        allQueue.removeAll(queuesToRemove);
+
         return queueToPublish;
     }
+
 
     private List<List<Data>> happensFirstGrouping() {
         List<List<Data>> queueToPublish = new ArrayList<>();
+        List<List<Data>> queuesToRemove = new ArrayList<>();
+
         for (List<Data> oneQueue : allQueue) {
             LocalDateTime firstTime = oneQueue.get(0).getLocalDateTime();
             LocalDateTime lastTime = oneQueue.get(oneQueue.size() - 1).getLocalDateTime();
             Duration duration = Duration.between(firstTime, lastTime);
             long seconds = duration.getSeconds();
-            if((seconds >= this.time) || (oneQueue.size() >= this.size)){
+
+            if (seconds >= this.time || oneQueue.size() >= this.size) {
                 queueToPublish.add(oneQueue);
-                allQueue.remove(oneQueue);
+                queuesToRemove.add(oneQueue);
             }
         }
+
+        allQueue.removeAll(queuesToRemove);
+
         return queueToPublish;
     }
 
+
     private List<List<Data>> fixedSizeGrouping() {
         List<List<Data>> queueToPublish = new ArrayList<>();
+        List<List<Data>> queuesToRemove = new ArrayList<>();
+
         for (List<Data> oneQueue : allQueue) {
-            if(oneQueue.size() >= this.size){
+            if (oneQueue.size() >= this.size) {
                 queueToPublish.add(oneQueue);
-                allQueue.remove(oneQueue);
+                queuesToRemove.add(oneQueue);
             }
         }
+
+        allQueue.removeAll(queuesToRemove);
+
         return queueToPublish;
     }
 

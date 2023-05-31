@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static ufcitycore.config.Config.ReaderYAMLConfig;
+import static ufcitycore.config.Config.*;
 import static ufcitycore.mqtt.ConnectionData.*;
 
 public class Main {
@@ -61,7 +61,6 @@ public class Main {
         connectionConfigSubEdge.setTopics(getEdgeSubscribeTopics());
         Subscribe subscribeEdge = new Subscribe(connectionConfigSubEdge);
         subscribeEdge.subscribe((topic, message) -> {
-            System.out.println("## Received message from Edge Computing: ");
             System.out.println("## Topic: "+topic+", Message: "+message);
             String[] topicSep = topic.split("/");
             String firstLevelTopic = topicSep[0];
@@ -83,7 +82,7 @@ public class Main {
     }
 
     private static void receivedResourceData(String uuid_device, String message) {
-        System.out.println(">> Received resource data.");
+        System.out.println(">> Resource data.");
         Resource resource = gson.fromJson(message, Resource.class);
         SaveInMemory sm = SaveInMemory.getInstance();
         Device d = sm.getDeviceByUUID(uuid_device);
@@ -104,9 +103,9 @@ public class Main {
 
         /* Adding resource data to queue */
         DataGroupingHandling.getInstance().addData(resource);
-
         /* Verify conditions to publish (Data Grouping) */
         List<List<Data>> queueToPublish = DataGroupingHandling.getInstance().getQueuesToPublish();
+
         if(queueToPublish.size() > 0){
 
             /* List of the resources to publish */
@@ -160,10 +159,13 @@ public class Main {
 
                         newService.addServiceData(newServiceData);
                     }
+
                     newResource.addService(newService);
                 }
+
                 result.add(newResource);
             }
+
            storageAndPublishCloud(uuid_device, result);
         }
     }
@@ -201,7 +203,7 @@ public class Main {
             System.out.println("Device already registered!");
             return;
         }
-        System.out.println(">> Saving in memory the device.");
+        System.out.println(">> Saving device data in memory.");
         Device device = gson.fromJson(message, Device.class);
         SaveInMemory.getInstance().addDevice(device);
         /* Storage in MongoDB */
@@ -214,7 +216,7 @@ public class Main {
             /* Update resource on MongoDB */
             database.updateResource(uuid_device, resource);
             /* Publishing resource on Cloud */
-            connectionConfigCloud.setTopic(getCloudResourceDataTopic(uuidItself, uuid_device, resource.getUuid_resource()));
+            connectionConfigCloud.setTopic("cloud/"+getCloudResourceDataTopic(uuidItself, uuid_device, resource.getUuid_resource()));
             Publish publish = new Publish(connectionConfigCloud);
             publish.publish(resource.toJson());
         }

@@ -11,7 +11,7 @@ UFCity Handler is a software component that integrates the UFCity solution for s
 Create a configuration file `config.yaml`:
 - ./
   - ufcity-handler.jar
-  - ufcity-handler.config
+  - config.yaml
 
 Example of a `config.yaml` file:
 ```

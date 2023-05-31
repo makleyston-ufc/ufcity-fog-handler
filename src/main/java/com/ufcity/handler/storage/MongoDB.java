@@ -48,7 +48,7 @@ public class MongoDB extends Database{
 
     @Override
     public void saveResource(String uuidDevice, Resource resource) {
-        System.out.print(">> Saving resource "+ resource.getUuid_resource() +" into device "+ uuidDevice +" in MongoDB... ");
+        System.out.println(">> Saving resource "+ resource.getUuid_resource() +" into device "+ uuidDevice +" on MongoDB. ");
         Bson filter = Filters.eq("uuid_device", uuidDevice);
         Bson projection = excludeId();
         Document device = collectionDevices.find(filter).projection(projection).first();
@@ -99,7 +99,7 @@ public class MongoDB extends Database{
 
     @Override
     public void updateDevice(Device device) {
-        System.out.print(">> Updating device "+ device.getUuid_device() +" in MongoDB... ");
+        System.out.println(">> Updating device "+ device.getUuid_device() +" in MongoDB... ");
         Bson filter = Filters.eq("uuid_device", device.getUuid_device());
         UpdateOptions options = new UpdateOptions().upsert(true);
         collectionDevices.updateOne(filter, createDocument(device), options);
@@ -108,18 +108,20 @@ public class MongoDB extends Database{
 
     @Override
     public void updateResource(String uuidDevice, Resource resource) {
-//        System.out.print(">> Removing resource " + resource.getUuid_resource() + " into device " + uuidDevice + " in MongoDB... ");
+        System.out.println(">> Removing resource " + resource.getUuid_resource() + " into device " + uuidDevice + " in MongoDB... ");
         Bson filter = Filters.eq("uuid_device", uuidDevice);
         Document device = collectionDevices.find(filter).projection(excludeId()).first();
         List<Document> resources;
         if (device != null) {
             resources = (List<Document>) device.get("resources");
+            List<Document> resourceToRemove = new ArrayList<>();
             resources.forEach(r -> {
                 if (r.get("uuid_resource").equals(resource.getUuid_resource())) {
-                    resources.remove(r);
+                    resourceToRemove.add(r);
                 }
             });
-            System.out.println(createDocument(resource).toJson());
+            resources.removeAll(resourceToRemove);
+
             resources.add(createDocument(resource));
             device.replace("resources", resources);
             ReplaceOptions options = new ReplaceOptions().upsert(true);
@@ -133,11 +135,13 @@ public class MongoDB extends Database{
         System.out.println(">> Verifying if this node is registered on Storage DB.");
         Document docFog = database.getCollection("fog_computing").find().first();
         if(docFog != null){
+            System.out.println("... OK");
             return docFog.getString("uuid_fog");
         }else {
             Document document = new Document();
             document.append("uuid_fog", uuid_fog);
             database.getCollection("fog_computing").insertOne(document);
+            System.out.println("... OK");
             return uuid_fog;
         }
     }
