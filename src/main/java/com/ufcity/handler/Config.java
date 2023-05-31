@@ -1,9 +1,6 @@
 package com.ufcity.handler;
 
-import com.ufcity.handler.procedures.AggregateDataHandling;
-import com.ufcity.handler.procedures.DataGroupingHandling;
-import com.ufcity.handler.procedures.MissingDataHandling;
-import com.ufcity.handler.procedures.OutliersHandling;
+import com.ufcity.handler.procedures.*;
 import com.ufcity.handler.storage.MongoDB;
 import ufcitycore.config.ConfigInterface;
 
@@ -35,25 +32,37 @@ public class Config implements ConfigInterface {
     }
 
     @Override
-    public void configGroupData(char method, long time, long size) {
-        DataGroupingHandling.getInstance().setMethod(method);
+    public void configGroupData(String method, long time, long size) {
+        char m = METHODS.methodMap.get("NONE");
+        if(method != null)
+            m = METHODS.methodMap.get(method);
+        DataGroupingHandling.getInstance().setMethod(m);
         DataGroupingHandling.getInstance().setTime(time);
         DataGroupingHandling.getInstance().setSize(size);
     }
 
     @Override
-    public void configAggregateData(char method) {
-        AggregateDataHandling.getInstance().setMethod(method);
+    public void configAggregateData(String method) {
+        char m = METHODS.methodMap.get("NONE");
+        if(method != null)
+            m = METHODS.methodMap.get(method);
+        AggregateDataHandling.getInstance().setMethod(m);
     }
 
     @Override
-    public void configMissingData(char method) {
-        MissingDataHandling.getInstance().setMethod(method);
+    public void configMissingData(String method) {
+        char m = METHODS.methodMap.get("NONE");
+        if(method != null)
+            m = METHODS.methodMap.get(method);
+        MissingDataHandling.getInstance().setMethod(m);
     }
 
     @Override
-    public void configRemoveOutlier(char method, double threshold, double lowerPercentile, double upperPercentile) {
-        OutliersHandling.getInstance().setMethod(method);
+    public void configRemoveOutlier(String method, double threshold, double lowerPercentile, double upperPercentile) {
+        char m = METHODS.methodMap.get("NONE");
+        if(method != null)
+            m = METHODS.methodMap.get(method);
+        OutliersHandling.getInstance().setMethod(m);
         OutliersHandling.getInstance().setThreshold(threshold);
         OutliersHandling.getInstance().setLowerPercentile(lowerPercentile);
         OutliersHandling.getInstance().setUpperPercentile(upperPercentile);
