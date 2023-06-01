@@ -216,7 +216,7 @@ public class Main {
             /* Update resource on MongoDB */
             database.updateResource(uuid_device, resource);
             /* Publishing resource on Cloud */
-            connectionConfigCloud.setTopic("cloud/"+getCloudResourceDataTopic(uuidItself, uuid_device, resource.getUuid_resource()));
+            connectionConfigCloud.setTopic(getCloudResourceDataTopic(uuidItself, uuid_device, resource.getUuid_resource()));
             Publish publish = new Publish(connectionConfigCloud);
             publish.publish(resource.toJson());
         }
