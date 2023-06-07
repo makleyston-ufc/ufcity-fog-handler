@@ -1,0 +1,24 @@
+fog-computing:
+ - address: 10.0.0.112
+ - port: 1883
+cloud-computing:
+ - address: 10.0.0.112
+ - port: 1883
+database:
+ - address: 10.0.0.112
+ - port: 27017
+ - username: root
+ - password: example
+data-grouping:
+ - method: FIXED_SIZE_GROUPING
+ - size: 2 # or 'time' in sec
+missing-data:
+ - method: MEAN_MISSING_DATA_METHOD
+removing-outliers:
+ - method: Z_SCORE_REMOVE_OUTLIERS_METHOD
+ - threshold: 3.0
+# To remove outliers using the method Percentile
+# - lower-percentile: 1.5
+# - upper-percentile: 1.5
+aggregating-data:
+ - method: MEAN_AGGREGATION_METHOD
