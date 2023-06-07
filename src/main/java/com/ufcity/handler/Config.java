@@ -9,8 +9,7 @@ import static ufcitycore.mqtt.ConnectionData.*;
 public class Config implements ConfigInterface {
     @Override
     public void configDataBase(String host, String port, String username, String password) {
-        System.out.println(host + " # " + port + " # " + username + " # " + password);
-        Main.database = new MongoDB(host, port);
+        Main.database = new MongoDB(host, port, username, password);
         System.out.println(">> Connecting database! Database address: "+host+":"+port);
     }
 
