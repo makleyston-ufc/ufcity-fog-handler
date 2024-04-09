@@ -39,6 +39,8 @@ public class Main {
         } catch (FileNotFoundException e) {
             System.err.println("Configuration file not found or not properly written!");
             throw new RuntimeException(e);
+        } catch (Exception e){
+            e.printStackTrace();
         }
 
         log.info("The Handler Service is starting its settings.\n" +
@@ -57,7 +59,7 @@ public class Main {
 
         /*  Initializing the MQTT Broker client - Fog Computing */
         System.out.println("### MQTT Broker ###");
-        ConnectionConfig connectionConfigSubEdge = new ConnectionConfig(INNER_HOST, INNER_PORT);
+        ConnectionConfig connectionConfigSubEdge = new ConnectionConfig(FOG_HOST, FOG_PORT);
         connectionConfigSubEdge.setTopics(getEdgeSubscribeTopics());
         Subscribe subscribeEdge = new Subscribe(connectionConfigSubEdge);
         subscribeEdge.subscribe((topic, message) -> {
@@ -89,7 +91,7 @@ public class Main {
 
         if(d == null){
             System.err.println("Device don't registered!");
-            ConnectionConfig connectionConfigPubEdge = new ConnectionConfig(INNER_HOST, INNER_PORT);
+            ConnectionConfig connectionConfigPubEdge = new ConnectionConfig(FOG_HOST, FOG_PORT);
             connectionConfigPubEdge.setTopic(getResendDeviceTopic(uuid_device));
             new Publish(connectionConfigPubEdge).publish(uuid_device);
             return;
@@ -188,7 +190,7 @@ public class Main {
         Device d = SaveInMemory.getInstance().getDeviceByUUID(uuid_device);
         if(d == null){
             System.err.println("Device don't registered!");
-            ConnectionConfig connectionConfigPubEdge = new ConnectionConfig(INNER_HOST, INNER_PORT);
+            ConnectionConfig connectionConfigPubEdge = new ConnectionConfig(FOG_HOST, FOG_PORT);
             connectionConfigPubEdge.setTopic(getResendDeviceTopic(uuid_device));
             new Publish(connectionConfigPubEdge).publish(uuid_device);
             return;

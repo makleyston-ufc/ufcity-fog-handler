@@ -33,32 +33,4 @@ public class METHODS {
         methodMap.put("MODE_MISSING_DATA_METHOD", 'S');
     }
 
-//    public static final char NONE = 'Z';
-//
-//    /* Grouping Data */
-//    public static final char FIXED_SIZE_GROUPING = 'A';
-//    public static final char HAPPENS_FIRST_GROUPING = 'B';
-//    public static final char AT_LEAST_TIME_GROUPING = 'C';
-//    public static final char AT_LEAST_TIME_AND_SIZE_GROUPING = 'D';
-//
-//    /* Data Aggregation */
-//    public static final char MEAN_AGGREGATION_METHOD = 'E';
-//    public static final char MEDIAN_AGGREGATION_METHOD = 'F';
-//    public static final char MAX_AGGREGATION_METHOD = 'G';
-//    public static final char MIN_AGGREGATION_METHOD = 'H';
-//
-//    /* Removing Outliers */
-//    public static final char IQR_REMOVE_OUTLIERS_METHOD = 'I';
-//    public static final char PERCENTILE_REMOVE_OUTLIERS_METHOD = 'J';
-//    public static final char TUKEY_REMOVE_OUTLIERS_METHOD = 'K';
-//    public static final char Z_SCORE_REMOVE_OUTLIERS_METHOD = 'L';
-//
-//    /* Missing Data */
-//    public static final char MEAN_MISSING_DATA_METHOD = 'M';
-//    public static final char MEDIAN_MISSING_DATA_METHOD = 'N';
-//    public static final char LOCF_MISSING_DATA_METHOD = 'O';
-//    public static final char INTERPOLATION_MISSING_DATA_METHOD = 'P';
-//    public static final char NOCB_MISSING_DATA_METHOD = 'Q';
-//    public static final char MODE_MISSING_DATA_METHOD = 'R';
-
 }

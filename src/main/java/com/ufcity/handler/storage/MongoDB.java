@@ -53,6 +53,7 @@ public class MongoDB extends Database{
         Bson filter = Filters.eq("uuid_device", uuidDevice);
         Bson projection = excludeId();
         Document device = collectionDevices.find(filter).projection(projection).first();
+        assert device != null;
         List<Document> resources = null;
 
         if(device != null){
@@ -63,7 +64,6 @@ public class MongoDB extends Database{
                     return;
 
             }
-
             Document newResource = createDocument(resource);
             resources.add(newResource);
             device.replace("resources", resources);
